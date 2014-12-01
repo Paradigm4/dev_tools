@@ -80,9 +80,9 @@ respective `lib/scidb/plugins` directories.
 
 ## Errors
 
-If things go wrong, errors are reported to the SciDB log. Errors in
+If things go wrong, errors are reported to the SciDB log. Errors from
 invoked command-line programs like wget and tar are reported in the
-`scidb-stderr.log` files on each instance.
+`scidb-stderr.log` file on each instance.
 
 ## Installing the plug in
 
