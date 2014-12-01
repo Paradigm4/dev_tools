@@ -1,10 +1,10 @@
-# dev\_tools
+# dev_tools
 
 Tools that support installation of SciDB plugins from GitHub repositories.
 
 ## Description
 
-The `dev\_tools` plugin library contains functions and operators for
+The `dev_tools` plugin library contains functions and operators for
 working with SciDB code in GitHub repositories. The `install_github`
 operator can install plugins directly from GitHub repositories, taking
 care of downloading, compiling, and distributing the plugin to all the
@@ -12,9 +12,9 @@ SciDB nodes.
 
 ## Synopsis
 
-install\_github('repo','ref')
+install_github('repo','ref')
 
-* repo is a GitHub repository path, for example `paradigm4/chunk\_unique`.
+* repo is a GitHub repository path, for example `paradigm4/chunk_unique`.
 * ref is a GitHub branch, for example `master`.
 
 ## Requirements
@@ -63,7 +63,7 @@ Run `make` and copy  the `libknn.so` plugin to the `lib/scidb/plugins`
 directory on each of your SciDB cluster nodes. Here is an example:
 
 ```
-cd dev\_tools
+cd dev_tools
 make
 cp *.so /opt/scidb/14.8/lib/scidb/plugins
 
