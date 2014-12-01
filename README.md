@@ -23,7 +23,8 @@ install_github('repo','ref')
 
 ## Requirements
 This plugin requires a few things:
-1. SciDB development headers need to be installed. For example, for SciDB
+
+* SciDB development headers need to be installed. For example, for SciDB
 version 14.8 run the following for Ubuntu or RHEL/CentOS, repsectively:
 Ubuntu:
 ```
@@ -33,7 +34,8 @@ CentOS or RHEL:
 ```
 sudo yum install scidb-14.8-dev.x86_64  scidb-14.8-libboost-devel.x86_64
 ```
-2. The user that runs the `scidb` process must have read/write access to
+
+* The user that runs the `scidb` process must have read/write access to
 the `lib/scidb/plugins` directory on every computer that SciDB is installed
 on in the cluster. For example, if the SciDB user name is `scidb` with
 group name `scidb`, and the
@@ -44,6 +46,9 @@ ssh 10.0.0.1 "chown -R scidb:scidb /opt/scidb/14.8/lib/scidb/plugins
 ssh 10.0.0.2 "chown -R scidb:scidb /opt/scidb/14.8/lib/scidb/plugins
 ssh 10.0.0.3 "chown -R scidb:scidb /opt/scidb/14.8/lib/scidb/plugins
 ```
+* The wget and tar programs must be installed on the coordinator node.
+* Installation must be initiated from the coordinator node.
+* The plugin repository must build with the simple command `make`.
 
 ## Example
 

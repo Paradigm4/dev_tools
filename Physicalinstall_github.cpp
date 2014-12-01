@@ -96,7 +96,7 @@ public:
 
 // Get our base SciDB path (XXX is there an easier way?), and build the plugin
             memset(cmd,0,CMDBUFSZ);
-            snprintf(cmd,CMDBUFSZ,"x=%s;x=`readlink $x/mpi`;x=`dirname $x`;x=`dirname $x`;cd %s; tar -zxf *.tar.gz;cd %s/*-%s;SCIDB=$x make && tar -zcf ../plugin.tar.gz *.so",scidbstor,dir,dir,branch.c_str());
+            snprintf(cmd,CMDBUFSZ,"x=%s;x=`readlink $x/SciDB-*`;x=`dirname $x`;x=`dirname $x`;cd %s; tar -zxf *;cd %s/*-%s;SCIDB=$x make && tar -zcf ../plugin.tar.gz *.so",scidbstor,dir,dir,branch.c_str());
             k = ::system((const char *)cmd);
             if(k!=0) throw SYSTEM_EXCEPTION(SCIDB_SE_OPERATOR, SCIDB_LE_ILLEGAL_OPERATION)
                         << "failed to build plugin";
@@ -119,7 +119,7 @@ public:
 
 // Install the plugin locally
             memset(cmd,0,CMDBUFSZ);
-            snprintf(cmd,CMDBUFSZ,"x=%s;x=`readlink $x/mpi`;x=`dirname $x`;x=`dirname $x`;x=$x/lib/scidb/plugins/;cd %s;tar -C $x -zxf plugin.tar.gz;cd ..;rm -rf %s",scidbstor,dir,dir);
+            snprintf(cmd,CMDBUFSZ,"x=%s;x=`readlink $x/SciDB-*`;x=`dirname $x`;x=`dirname $x`;x=$x/lib/scidb/plugins/;cd %s;tar -C $x -zxf plugin.tar.gz;cd ..;rm -rf %s",scidbstor,dir,dir);
             k = ::system((const char *)cmd);
             if(k!=0) throw SYSTEM_EXCEPTION(SCIDB_SE_OPERATOR, SCIDB_LE_ILLEGAL_OPERATION)
                         << "failed to install plugin";
@@ -173,7 +173,7 @@ public:
                         << "failed to write plugin";
 // Install the plugin locally
             memset(cmd,0,CMDBUFSZ);
-            snprintf(cmd,CMDBUFSZ,"x=%s;x=`readlink $x/mpi`;x=`dirname $x`;x=`dirname $x`;x=$x/lib/scidb/plugins/;cd %s;tar -C $x -zxf plugin.tar.gz;cd ..; rm -rf %s",scidbstor,dir,dir);
+            snprintf(cmd,CMDBUFSZ,"x=%s;x=`readlink $x/SciDB-*`;x=`dirname $x`;x=`dirname $x`;x=$x/lib/scidb/plugins/;cd %s;tar -C $x -zxf plugin.tar.gz;cd ..; rm -rf %s",scidbstor,dir,dir);
             k = ::system((const char *)cmd);
             if(k!=0) throw SYSTEM_EXCEPTION(SCIDB_SE_OPERATOR, SCIDB_LE_ILLEGAL_OPERATION)
                         << "failed to install plugin";
