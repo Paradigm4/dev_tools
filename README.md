@@ -49,8 +49,8 @@ the tar program must be installed on all SciDB nodes.
 * Installation must be initiated from the coordinator node.
 * The plugin repository must build with the simple command `make`.
 
-Note that plugins that rely on system libraries still require those libraries
-to be available on all cluster nodes.
+Note that plugins that rely on system libraries require that those libraries
+are available on all cluster nodes.
 
 ## Example
 
