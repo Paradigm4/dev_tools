@@ -35,19 +35,22 @@ sudo yum install scidb-14.8-dev  scidb-14.8-libboost-devel
 ```
 
 * The user that runs the `scidb` process must have read/write access to
-the `lib/scidb/plugins` directory on every computer that SciDB is installed
-on in the cluster. For example, if the SciDB user name is `scidb` with
-group name `scidb`, and the
-computer nodes in the cluster are `10.0.0.1, 10.0.0.2, 10.0.0.3`,  then
-run the following as the root user:
+the `lib/scidb/plugins` directory on every computer that SciDB is installed on
+in the cluster (that is, on every *node*). For example, if the SciDB user name
+is `scidb` with group name `scidb`, and the computer nodes in the cluster are
+`10.0.0.1, 10.0.0.2, 10.0.0.3`,  then run the following as the root user:
 ```
 ssh 10.0.0.1 "chown -R scidb:scidb /opt/scidb/14.8/lib/scidb/plugins
 ssh 10.0.0.2 "chown -R scidb:scidb /opt/scidb/14.8/lib/scidb/plugins
 ssh 10.0.0.3 "chown -R scidb:scidb /opt/scidb/14.8/lib/scidb/plugins
 ```
-* The wget and tar programs must be installed on the coordinator node.
+* The wget and tar programs must be installed on the coordinator node, and
+the tar program must be installed on all SciDB nodes.
 * Installation must be initiated from the coordinator node.
 * The plugin repository must build with the simple command `make`.
+
+Note that plugins that rely on system libraries still require those libraries
+to be available on all cluster nodes.
 
 ## Example
 
