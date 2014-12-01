@@ -136,8 +136,7 @@ public:
                 } else
                 {
                   // don't copy
-                  BufSend(i, tarball, query);
-//                  BufSend(i, nothing, query);
+                  BufSend(i, nothing, query);
                 }
             }
 
