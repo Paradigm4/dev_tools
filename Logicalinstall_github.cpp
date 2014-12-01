@@ -17,7 +17,7 @@ namespace scidb
  *
  * @par Input:
  *   - repo: a repository formatted like user/repo, for example paradigm4/knn.
- *   - branch: optional repository branch, defaults to 'master'.
+ *   - branch: optional repository branch, typically 'master'.
  *
  * @par Output array:
  *        <
