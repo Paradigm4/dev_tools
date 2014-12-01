@@ -5,10 +5,14 @@ Tools that support installation of SciDB plugins from GitHub repositories.
 ## Description
 
 The `dev_tools` plugin library contains functions and operators for
-working with SciDB code in GitHub repositories. The `install_github`
-operator can install plugins directly from GitHub repositories, taking
-care of downloading, compiling, and distributing the plugin to all the
-SciDB nodes.
+working with SciDB code in GitHub repositories.
+
+The `install_github` operator can install plugins directly from GitHub
+repositories, taking care of downloading, compiling, and distributing the
+plugin to all the SciDB nodes.
+
+Other development tools and functions are expected to be added to this plugin
+library over time.
 
 ## Synopsis
 
