@@ -66,7 +66,7 @@ Install the example 'chunk_unique' (`cu`) operator:
 
 ```
 load_library('dev_tools')
-install_github('paradigm4/chunk_unique','master')
+install_github('paradigm4/chunk_unique')
 load_library('cu')
 ```
 
