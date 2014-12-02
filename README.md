@@ -54,7 +54,8 @@ ssh 10.0.0.3 "chown -R scidb:scidb /opt/scidb/14.8/lib/scidb/plugins
 * The wget and tar programs must be installed on the coordinator node, and
 the tar program must be installed on all SciDB nodes.
 * Installation must be initiated from instance ID 0.
-* The plugin repository must build with the simple command `make`.
+* The plugin repository must build with the simple command `make` and the
+optional environment variable definitions passed through the options argument.
 
 Note that plugins that rely on system libraries require that those libraries
 are available on all cluster nodes.
