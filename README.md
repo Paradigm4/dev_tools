@@ -32,7 +32,7 @@ sudo apt-get install scidb-14.8-dev scidb-14.8-libboost1.54-all-dev
 ```
 CentOS or RHEL:
 ```
-sudo yum install scidb-14.8-dev.x86_64  scidb-14.8-libboost-devel.x86_64
+sudo yum install scidb-14.8-dev  scidb-14.8-libboost-devel
 ```
 
 * The user that runs the `scidb` process must have read/write access to
