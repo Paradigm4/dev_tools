@@ -18,8 +18,8 @@ library over time.
 
 install_github('repo','ref')
 
-* repo is a GitHub repository path, for example `paradigm4/chunk_unique`.
-* ref is a GitHub branch, for example `master`.
+* repo is a GitHub repository path, for example `paradigm4/chunk_unique`
+* ref is a GitHub branch, for example `master`
 
 ## Requirements
 This plugin requires a few things:
