@@ -1,5 +1,7 @@
 # dev_tools
 
+__DON'T USE THIS YET -- WORK IN PROGRESS__
+
 Tools that support installation of SciDB plugins from GitHub repositories.
 
 ## Description
