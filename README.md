@@ -18,7 +18,7 @@ library over time.
 ```
 install_github('repo' [, 'branch'] [, 'options'])
 ```
-where, 
+where, square brackets indicate option arguments and:
 * repo is a GitHub repository path, for example 'paradigm4/chunk_unique'
 * branch is an a GitHub branch, defaults to 'master'
 * options is an optional string of environment variable definitions preceeding
