@@ -58,10 +58,6 @@ public:
         char dir[4096];
         int k;
         char *d;
-        Instances instances;
-        SystemCatalog::getInstance()->getInstances(instances);
-        Instances::const_iterator iter = instances.begin();
-        const char *scidbstor = iter->getPath().c_str();
 
 // Only in the inscrutable SciDB code would the following intuitive check not
 // work. Argghhhhh.
@@ -69,6 +65,10 @@ public:
         if (query->getCoordinatorID() == COORDINATOR_INSTANCE)
         {
             const char *s = "";
+            Instances instances;
+            SystemCatalog::getInstance()->getInstances(instances);
+            Instances::const_iterator iter = instances.begin();
+            const char *scidbstor = iter->getPath().c_str();
             InstanceID id;
             std::set<InstanceID> first_instances;
             while(iter != instances.end())
@@ -156,6 +156,9 @@ public:
         shared_ptr<SharedBuffer> buf = BufReceive(query->getCoordinatorID(), query);
         if(buf)
         {
+            Instances instances;
+            SystemCatalog::getInstance()->getInstances(instances);
+            const char *scidbstor = instances[query->getInstanceID()].getPath().c_str();
             snprintf(dir,4096,"/tmp/install_github_XXXXXX");
             d = mkdtemp(dir);
             if(!d) throw SYSTEM_EXCEPTION(SCIDB_SE_OPERATOR, SCIDB_LE_ILLEGAL_OPERATION)
