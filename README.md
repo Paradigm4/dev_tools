@@ -59,6 +59,27 @@ install_github('paradigm4/chunk_unique','master')
 load_library('cu')
 ```
 
+## What happens under the hood
+
+Install_github uses the wget command to download the compressed, tarball
+repository from GitHub on the coordinator node only.
+For example, `install_github('paradigm4/knn','master')`
+will result in a wget of `https://github.com/paradigm4/knn-master.tar.gz`.
+It then decompresses the tarball and tries to build the plugin by issuing
+the `make` command in the top-level directory of the decompressed
+repository.
+
+If that succeeds, install_github then bundles any resulting `*.so` files
+into a single compressed tarball and copies them using the internal
+SciDB network stack to one instance on each computer in the SciDB cluster.
+The receiving instances decompress the built library into their
+respective `lib/scidb/plugins` directories.
+
+## Errors
+
+If things go wrong, errors are reported to the SciDB log. Errors in
+invoked command-line programs like wget and tar are reported in the
+`scidb-stderr.log` files on each instance.
 
 ## Installing the plug in
 
