@@ -10,28 +10,21 @@ namespace scidb
  * @brief install_github.
  *
  * @par Synopsis:
- *   install_github( repo, branch )
+ *   install_github( repo [, branch] [, options] )
  *
  * @par Summary:
  *   Download, build, and install a plugin from GitHub.
  *
  * @par Input:
  *   - repo: a repository formatted like user/repo, for example paradigm4/knn.
- *   - branch: optional repository branch, typically 'master'.
+ *   - branch: optional repository branch, defaults to 'master'.
+ *   - options: optional defines inserted before make, for example SCIDB=/nonstandard/scidb/location
  *
  * @par Output array:
- *        <
- *   <br>   success: bool
- *   <br> >
- *   <br> [
- *   <br>   i: start=end=0, chunk interval=1.
- *   <br> ]
+ *        <  success: bool >[i=0:0,1,0]
  *
  * @par Examples:
- *   install_github('paradigm4/load_tools','master')
- *
- * @par Errors:
- *   n/a
+ *   install_github('paradigm4/load_tools')
  *
  */
 class Logicalinstall_github: public LogicalOperator
@@ -41,8 +34,28 @@ public:
         LogicalOperator(logicalName, alias)
     {
     	ADD_PARAM_CONSTANT("string")
-    	ADD_PARAM_CONSTANT("string")
-    	_usage = "install_github('repository', 'branch')";
+        ADD_PARAM_VARIES()
+    	_usage = "install_github('repository' [, 'branch'] [, 'options'])";
+    }
+
+    std::vector<boost::shared_ptr<OperatorParamPlaceholder> > nextVaryParamPlaceholder(const std::vector< ArrayDesc> &schemas)
+    {  
+        std::vector<boost::shared_ptr<OperatorParamPlaceholder> > res;
+        res.push_back(END_OF_VARIES_PARAMS());
+        switch (_parameters.size()) {
+          case 0:
+/* No optional arguments */
+            break;
+          case 1:
+/* branch */
+            res.push_back(PARAM_CONSTANT("string"));
+            break;
+          case 2:
+/* makefile options */
+            res.push_back(PARAM_CONSTANT("string"));
+            break;
+        }
+        return res;
     }
 
     ArrayDesc inferSchema(vector<ArrayDesc> inputSchemas, shared_ptr<Query> query)
@@ -55,6 +68,7 @@ public:
     }
 
 };
+
 
 REGISTER_LOGICAL_OPERATOR_FACTORY(Logicalinstall_github, "install_github");
 

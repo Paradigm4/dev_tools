@@ -83,7 +83,15 @@ public:
             }
 
             std::string const repo = ((boost::shared_ptr<OperatorParamPhysicalExpression>&)_parameters[0])->getExpression()->evaluate().getString();
-            std::string const branch = ((boost::shared_ptr<OperatorParamPhysicalExpression>&)_parameters[1])->getExpression()->evaluate().getString();
+            std::string branch;
+            if(_parameters.size()>1)
+                branch = ((boost::shared_ptr<OperatorParamPhysicalExpression>&)_parameters[1])->getExpression()->evaluate().getString();
+            else branch = "master";
+
+            std::string options;
+            if(_parameters.size()>2)
+                options = ((boost::shared_ptr<OperatorParamPhysicalExpression>&)_parameters[2])->getExpression()->evaluate().getString();
+            else options = "";
 
             snprintf(dir,4096,"/tmp/install_github_XXXXXX");
             d = mkdtemp(dir);
@@ -96,7 +104,7 @@ public:
 
 // Get our base SciDB path (XXX is there an easier way?), and build the plugin
             memset(cmd,0,CMDBUFSZ);
-            snprintf(cmd,CMDBUFSZ,"x=%s;x=`readlink $x/SciDB-*`;x=`dirname $x`;x=`dirname $x`;cd %s; tar -zxf *;cd %s/*-%s;SCIDB=$x make && tar -zcf ../plugin.tar.gz *.so",scidbstor,dir,dir,branch.c_str());
+            snprintf(cmd,CMDBUFSZ,"x=%s;x=`readlink $x/SciDB-*`;x=`dirname $x`;x=`dirname $x`;cd %s; tar -zxf *;cd %s/*-%s;SCIDB=$x %s make && tar -zcf ../plugin.tar.gz *.so",scidbstor,dir,dir,branch.c_str(), options.c_str());
             k = ::system((const char *)cmd);
             if(k!=0) throw SYSTEM_EXCEPTION(SCIDB_SE_OPERATOR, SCIDB_LE_ILLEGAL_OPERATION)
                         << "failed to build plugin";

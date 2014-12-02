@@ -15,14 +15,21 @@ Other development tools and functions are expected to be added to this plugin
 library over time.
 
 ## Synopsis
+```
+install_github('repo' [, 'branch'] [, 'options'])
+```
+where, 
+* repo is a GitHub repository path, for example 'paradigm4/chunk_unique'
+* branch is an a GitHub branch, defaults to 'master'
+* options is an optional string of environment variable definitions preceeding
+  the invocation of make, for example 'SCIDB_3RDPARTY=/somewhere'
 
-install_github('repo','ref')
-
-* repo is a GitHub repository path, for example `paradigm4/chunk_unique`
-* ref is a GitHub branch, for example `master`
+The environment variable SCIDB is automatically set to the path containing
+the running version of scidb. You can set the SCIDB environment variable
+in the options string to override the default choice.
 
 ## Requirements
-This plugin requires a few things:
+This plugin requires that
 
 * SciDB development headers need to be installed. For example, for SciDB
 version 14.8 run the following for Ubuntu or RHEL/CentOS, respectively:
