@@ -58,10 +58,6 @@ public:
         char dir[4096];
         int k;
         char *d;
-        Instances instances;
-        SystemCatalog::getInstance()->getInstances(instances);
-        Instances::const_iterator iter = instances.begin();
-        const char *scidbstor = iter->getPath().c_str();
 
 // Only in the inscrutable SciDB code would the following intuitive check not
 // work. Argghhhhh.
@@ -69,6 +65,10 @@ public:
         if (query->getCoordinatorID() == COORDINATOR_INSTANCE)
         {
             const char *s = "";
+            Instances instances;
+            SystemCatalog::getInstance()->getInstances(instances);
+            Instances::const_iterator iter = instances.begin();
+            const char *scidbstor = iter->getPath().c_str();
             InstanceID id;
             std::set<InstanceID> first_instances;
             while(iter != instances.end())
@@ -156,6 +156,11 @@ public:
         shared_ptr<SharedBuffer> buf = BufReceive(query->getCoordinatorID(), query);
         if(buf)
         {
+            Instances instances;
+            SystemCatalog::getInstance()->getInstances(instances);
+            Instances::const_iterator iter = instances.begin();
+            const char *scidbstor = iter->getPath().c_str();
+fprintf(stderr, "Hello\n");
             snprintf(dir,4096,"/tmp/install_github_XXXXXX");
             d = mkdtemp(dir);
             if(!d) throw SYSTEM_EXCEPTION(SCIDB_SE_OPERATOR, SCIDB_LE_ILLEGAL_OPERATION)
@@ -172,12 +177,13 @@ public:
                         << "failed to write plugin";
 // Install the plugin locally
             memset(cmd,0,CMDBUFSZ);
+fprintf(stderr,"SCIDBSTOR %s\n",scidbstor);
             snprintf(cmd,CMDBUFSZ,"x=%s;x=`readlink $x/SciDB-*`;x=`dirname $x`;x=`dirname $x`;x=$x/lib/scidb/plugins/;cd %s;tar -C $x -zxf plugin.tar.gz;cd ..; rm -rf %s",scidbstor,dir,dir);
             k = ::system((const char *)cmd);
             if(k!=0) throw SYSTEM_EXCEPTION(SCIDB_SE_OPERATOR, SCIDB_LE_ILLEGAL_OPERATION)
                         << "failed to install plugin";
 
-        }
+        } else fprintf(stderr, "I'm not on the special list\n");
         return boost::shared_ptr<Array>(new MemArray(_schema,query));
     }
 };
