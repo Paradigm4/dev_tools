@@ -26,12 +26,11 @@ This plugin requires a few things:
 
 * SciDB development headers need to be installed. For example, for SciDB
 version 14.8 run the following for Ubuntu or RHEL/CentOS, repsectively:
-Ubuntu:
 ```
+# On Ubuntu systems, run:
 sudo apt-get install scidb-14.8-dev scidb-14.8-libboost1.54-all-dev
-```
-CentOS or RHEL:
-```
+
+# On CentOS or RHEL systems, run:
 sudo yum install scidb-14.8-dev  scidb-14.8-libboost-devel
 ```
 
