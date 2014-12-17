@@ -51,8 +51,11 @@ ssh 10.0.0.1 "chown -R scidb:scidb /opt/scidb/14.8/lib/scidb/plugins
 ssh 10.0.0.2 "chown -R scidb:scidb /opt/scidb/14.8/lib/scidb/plugins
 ssh 10.0.0.3 "chown -R scidb:scidb /opt/scidb/14.8/lib/scidb/plugins
 ```
-* The wget and tar programs must be installed on the coordinator node, and
-the tar program must be installed on all SciDB nodes.
+
+### Notes and limitations
+
+* The wget and tar programs must be installed on the SciDB node on whic
+SciDB instance ID 0 is running, and the tar program must be installed on all SciDB nodes.
 * Installation must be initiated from instance ID 0.
 * The plugin repository must build with the simple command `make` and the
 optional environment variable definitions passed through the options argument.
@@ -73,7 +76,7 @@ load_library('cu')
 ## What happens under the hood
 
 Install_github uses the wget command to download the compressed, tarball
-repository from GitHub on the coordinator node only.
+repository from GitHub on SciDB node 0 only.
 For example, `install_github('paradigm4/knn','master')`
 will result in a wget of `https://github.com/paradigm4/knn-master.tar.gz`.
 It then decompresses the tarball and tries to build the plugin by issuing
