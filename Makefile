@@ -4,7 +4,6 @@ ifeq ($(SCIDB),)
     X := $(shell dirname ${X})
     SCIDB := $(shell dirname ${X})
   endif
-  $(info SciDB installed at $(SCIDB))
 endif
 
 # A development environment will have SCIDB_VER defined, and SCIDB
@@ -16,6 +15,9 @@ else
   SCIDB_3RDPARTY = /opt/scidb/$(SCIDB_VER)/3rdparty
 endif
 
+$(info Using SciDB path $(SCIDB))
+SCIDB_VARIANT=$(shell $(SCIDB)/bin/scidb --ver | head -n 1 | cut -d : -f 2 | cut -d '.' -f 1,2 | sed -e "s/\./ *100 + /" | bc)
+
 INSTALL_DIR = $(SCIDB)/lib/scidb/plugins
 
 # Include the OPTIMIZED flags for non-debug use
@@ -25,7 +27,7 @@ CFLAGS = -pedantic -W -Wextra -Wall -Wno-variadic-macros -Wno-strict-aliasing \
          -Wno-long-long -Wno-unused-parameter -fPIC -D_STDC_FORMAT_MACROS \
          -Wno-system-headers -isystem  $(OPTIMIZED) -D_STDC_LIMIT_MACROS -std=c99
 CCFLAGS = -pedantic -W -Wextra -Wall -Wno-variadic-macros -Wno-strict-aliasing \
-         -Wno-long-long -Wno-unused-parameter -fPIC $(OPTIMIZED) 
+         -Wno-long-long -Wno-unused-parameter -fPIC -DSCIDB_VARIANT=$(SCIDB_VARIANT) $(OPTIMIZED)
 INC = -I. -DPROJECT_ROOT="\"$(SCIDB)\"" -I"$(SCIDB_3RDPARTY)/boost/include/" \
       -I"$(SCIDB)/include" -I./extern
 

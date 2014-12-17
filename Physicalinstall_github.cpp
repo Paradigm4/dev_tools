@@ -33,7 +33,12 @@
 #include <unistd.h>
 
 #include "query/Operator.h"
+
+#if SCIDB_VARIANT < 1412
 #include "query/Network.h"
+#else
+#include "util/Network.h"
+#endif
 
 #define CMDBUFSZ 16384
 
@@ -62,7 +67,7 @@ public:
 // Only in the inscrutable SciDB code would the following intuitive check not
 // work. Argghhhhh.
 //        if (query->getCoordinatorID() == query->getInstanceID())
-        if (query->getCoordinatorID() == COORDINATOR_INSTANCE)
+        if (query->getCoordinatorID() == 0)
         {
             const char *s = "";
             Instances instances;
