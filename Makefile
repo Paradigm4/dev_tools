@@ -6,13 +6,8 @@ ifeq ($(SCIDB),)
   endif
 endif
 
-# A development environment will have SCIDB_VER defined, and SCIDB
-# will not be in the same place... but the 3rd party directory *will*
-# be, so build it using SCIDB_VER .
-ifeq ($(SCIDB_VER),)
-  SCIDB_3RDPARTY = $(SCIDB)/3rdparty
-else
-  SCIDB_3RDPARTY = /opt/scidb/$(SCIDB_VER)/3rdparty
+ifeq ($(SCIDB_THIRDPARTY_PREFIX),) 
+  SCIDB_THIRDPARTY_PREFIX := $(SCIDB)
 endif
 
 $(info Using SciDB path $(SCIDB))
@@ -28,11 +23,11 @@ CFLAGS = -pedantic -W -Wextra -Wall -Wno-variadic-macros -Wno-strict-aliasing \
          -Wno-system-headers -isystem  $(OPTIMIZED) -D_STDC_LIMIT_MACROS -std=c99
 CCFLAGS = -pedantic -W -Wextra -Wall -Wno-variadic-macros -Wno-strict-aliasing \
          -Wno-long-long -Wno-unused-parameter -fPIC -DSCIDB_VARIANT=$(SCIDB_VARIANT) $(OPTIMIZED)
-INC = -I. -DPROJECT_ROOT="\"$(SCIDB)\"" -I"$(SCIDB_3RDPARTY)/boost/include/" \
+INC = -I. -DPROJECT_ROOT="\"$(SCIDB)\"" -I"$(SCIDB_THIRDPARTY_PREFIX)/3rdparty/boost/include/" \
       -I"$(SCIDB)/include" -I./extern
 
 LIBS = -shared -Wl,-soname,libdev_tools.so -ldl -L. \
-       -L"$(SCIDB)/3rdparty/boost/lib" -L"$(SCIDB)/lib" \
+       -L"$(SCIDB_THIRDPARTY_PREFIX)/3rdparty/boost/lib" -L"$(SCIDB)/lib" \
        -Wl,-rpath,$(SCIDB)/lib:$(RPATH)
 
 SRCS = Logicalinstall_github.cpp \
