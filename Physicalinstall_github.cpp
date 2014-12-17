@@ -64,10 +64,7 @@ public:
         int k;
         char *d;
 
-// Only in the inscrutable SciDB code would the following intuitive check not
-// work. Argghhhhh.
-//        if (query->getCoordinatorID() == query->getInstanceID())
-        if (query->getCoordinatorID() == 0)
+        if (query->getInstanceID() == 0)
         {
             const char *s = "";
             Instances instances;
@@ -103,6 +100,7 @@ public:
             if(!d) throw SYSTEM_EXCEPTION(SCIDB_SE_OPERATOR, SCIDB_LE_ILLEGAL_OPERATION)
                         << "failed to create temp directory";
             snprintf(cmd,CMDBUFSZ,"cd %s && wget https://github.com/%s/archive/%s.tar.gz",dir,repo.c_str(),branch.c_str());
+fprintf(stderr, "cmd %s\n",cmd);
             k = ::system((const char *)cmd);
             if(k!=0) throw SYSTEM_EXCEPTION(SCIDB_SE_OPERATOR, SCIDB_LE_ILLEGAL_OPERATION)
                         << "failed to retrieve repository";
