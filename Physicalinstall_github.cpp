@@ -107,7 +107,9 @@ fprintf(stderr, "cmd %s\n",cmd);
 
 // Get our base SciDB path (XXX is there an easier way?), and build the plugin
             memset(cmd,0,CMDBUFSZ);
-            snprintf(cmd,CMDBUFSZ,"x=%s;x=`readlink $x/SciDB-*`;x=`dirname $x`;x=`dirname $x`;cd %s; tar -zxf *;cd %s/*-%s;SCIDB=$x %s make && tar -zcf ../plugin.tar.gz *.so",scidbstor,dir,dir,branch.c_str(), options.c_str());
+            pid_t mypid = getpid();
+            snprintf(cmd,CMDBUFSZ,"x=`readlink /proc/%d/exe`;x=`dirname $x`;x=`dirname $x`;cd %s; tar -zxf *;cd %s/*-%s;SCIDB=$x %s make && tar -zcf ../plugin.tar.gz *.so",mypid,dir,dir,branch.c_str(), options.c_str());
+fprintf(stderr,"cmd = %s\n",cmd);
             k = ::system((const char *)cmd);
             if(k!=0) throw SYSTEM_EXCEPTION(SCIDB_SE_OPERATOR, SCIDB_LE_ILLEGAL_OPERATION)
                         << "failed to build plugin";
