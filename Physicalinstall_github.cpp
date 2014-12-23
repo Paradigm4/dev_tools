@@ -70,7 +70,6 @@ public:
             Instances instances;
             SystemCatalog::getInstance()->getInstances(instances);
             Instances::const_iterator iter = instances.begin();
-            const char *scidbstor = iter->getPath().c_str();
             InstanceID id;
             std::set<InstanceID> first_instances;
             while(iter != instances.end())
@@ -109,7 +108,6 @@ fprintf(stderr, "cmd %s\n",cmd);
             memset(cmd,0,CMDBUFSZ);
             pid_t mypid = getpid();
             snprintf(cmd,CMDBUFSZ,"x=`readlink /proc/%d/exe`;x=`dirname $x`;x=`dirname $x`;cd %s; tar -zxf *;cd %s/*-%s;SCIDB=$x %s make && tar -zcf ../plugin.tar.gz *.so",mypid,dir,dir,branch.c_str(), options.c_str());
-fprintf(stderr,"cmd = %s\n",cmd);
             k = ::system((const char *)cmd);
             if(k!=0) throw SYSTEM_EXCEPTION(SCIDB_SE_OPERATOR, SCIDB_LE_ILLEGAL_OPERATION)
                         << "failed to build plugin";
@@ -132,7 +130,7 @@ fprintf(stderr,"cmd = %s\n",cmd);
 
 // Install the plugin locally
             memset(cmd,0,CMDBUFSZ);
-            snprintf(cmd,CMDBUFSZ,"x=%s;x=`readlink $x/SciDB-*`;x=`dirname $x`;x=`dirname $x`;x=$x/lib/scidb/plugins/;cd %s;tar -C $x -zxf plugin.tar.gz;cd ..;rm -rf %s",scidbstor,dir,dir);
+            snprintf(cmd,CMDBUFSZ,"x=`readlink /proc/%d/exe`;x=`dirname $x`;x=`dirname $x`;x=$x/lib/scidb/plugins/;cd %s;tar -C $x -zxf plugin.tar.gz;cd ..;rm -rf %s",mypid,dir,dir);
             k = ::system((const char *)cmd);
             if(k!=0) throw SYSTEM_EXCEPTION(SCIDB_SE_OPERATOR, SCIDB_LE_ILLEGAL_OPERATION)
                         << "failed to install plugin";
@@ -171,7 +169,6 @@ fprintf(stderr,"cmd = %s\n",cmd);
         {
             Instances instances;
             SystemCatalog::getInstance()->getInstances(instances);
-            const char *scidbstor = instances[query->getInstanceID()].getPath().c_str();
             snprintf(dir,4096,"/tmp/install_github_XXXXXX");
             d = mkdtemp(dir);
             if(!d) throw SYSTEM_EXCEPTION(SCIDB_SE_OPERATOR, SCIDB_LE_ILLEGAL_OPERATION)
@@ -188,7 +185,8 @@ fprintf(stderr,"cmd = %s\n",cmd);
                         << "failed to write plugin";
 // Install the plugin locally
             memset(cmd,0,CMDBUFSZ);
-            snprintf(cmd,CMDBUFSZ,"x=%s;x=`readlink $x/SciDB-*`;x=`dirname $x`;x=`dirname $x`;x=$x/lib/scidb/plugins/;cd %s;tar -C $x -zxf plugin.tar.gz;cd ..; rm -rf %s",scidbstor,dir,dir);
+            pid_t mypid = getpid();
+            snprintf(cmd,CMDBUFSZ,"x=`readlink /proc/%d/exe`;x=`dirname $x`;x=`dirname $x`;x=$x/lib/scidb/plugins/;cd %s;tar -C $x -zxf plugin.tar.gz;cd ..; rm -rf %s",mypid,dir,dir);
             k = ::system((const char *)cmd);
             if(k!=0) throw SYSTEM_EXCEPTION(SCIDB_SE_OPERATOR, SCIDB_LE_ILLEGAL_OPERATION)
                         << "failed to install plugin";
