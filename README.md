@@ -31,14 +31,15 @@ in the options string to override the default choice.
 ## Requirements
 This plugin requires that
 
-* SciDB development headers need to be installed. For example, for SciDB
+* SciDB development headers and a few additional development headers
+need to be installed. For example, for SciDB
 version 14.8 run the following for Ubuntu or RHEL/CentOS, respectively:
 ```
 # On Ubuntu systems, run:
-sudo apt-get install scidb-14.8-dev scidb-14.8-libboost1.54-all-dev
+sudo apt-get install scidb-14.8-dev scidb-14.8-libboost1.54-all-dev libpqxx3-dev
 
 # On CentOS or RHEL systems, run:
-sudo yum install scidb-14.8-dev  scidb-14.8-libboost-devel
+sudo yum install scidb-14.8-dev  scidb-14.8-libboost-devel libpqxx-devel
 ```
 
 * The user that runs the `scidb` process must have read/write access to
