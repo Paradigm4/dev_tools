@@ -33,14 +33,18 @@ This plugin requires that
 
 * SciDB development headers and a few additional development headers
 need to be installed. For example, for SciDB
-version 14.8 run the following for Ubuntu or RHEL/CentOS, respectively:
+version 14.8 run the following for Ubuntu or RHEL/CentOS, respectively
+(change the SciDB version number as required):
 ```
 # On Ubuntu systems, run:
-sudo apt-get install scidb-14.8-dev scidb-14.8-libboost1.54-all-dev libpqxx3-dev
+sudo apt-get install scidb-14.8-dev scidb-14.8-libboost1.54-all-dev libpqxx3-dev liblog4cxx10-dev
 
 # On CentOS or RHEL systems, run:
-sudo yum install scidb-14.8-dev  scidb-14.8-libboost-devel libpqxx-devel
+sudo yum install scidb-14.8-dev  scidb-14.8-libboost-devel libpqxx-devel log4cxx-devel
 ```
+Note that some plugins might require installation of additional operating system development
+header packages. If a plugin fails to compile, examine its error output and install additional
+packages as required.
 
 * The user that runs the `scidb` process must have read/write access to
 the `lib/scidb/plugins` directory on every computer that SciDB is installed on
