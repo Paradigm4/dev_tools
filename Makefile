@@ -21,7 +21,7 @@ DEBUG=-g -ggdb3
 CFLAGS = -pedantic -W -Wextra -Wall -Wno-variadic-macros -Wno-strict-aliasing \
          -Wno-long-long -Wno-unused-parameter -fPIC -D_STDC_FORMAT_MACROS \
          -Wno-system-headers -isystem  $(OPTIMIZED) -D_STDC_LIMIT_MACROS -std=c99
-CCFLAGS = -pedantic -W -Wextra -Wall -Wno-variadic-macros -Wno-strict-aliasing \
+CXXFLAGS = -pedantic -W -Wextra -Wall -Wno-variadic-macros -Wno-strict-aliasing \
          -Wno-long-long -Wno-unused-parameter -fPIC -DSCIDB_VARIANT=$(SCIDB_VARIANT) $(OPTIMIZED)
 INC = -I. -DPROJECT_ROOT="\"$(SCIDB)\"" -I"$(SCIDB_THIRDPARTY_PREFIX)/3rdparty/boost/include/" \
       -I"$(SCIDB)/include" -I./extern
@@ -33,6 +33,20 @@ LIBS = -shared -Wl,-soname,libdev_tools.so -ldl -L. \
 SRCS = Logicalinstall_github.cpp \
        Physicalinstall_github.cpp
 
+# Compiler settings for SciDB version >= 15.7
+ifneq ("$(wildcard /usr/bin/g++-4.9)","")
+  CC := "/usr/bin/gcc-4.9"
+  CXX := "/usr/bin/g++-4.9"
+  CXXFLAGS+=-std=c++11 -DCPP11
+else
+  ifneq ("$(wildcard /opt/rh/devtoolset-3/root/usr/bin/gcc)","")
+    CC := "/opt/rh/devtoolset-3/root/usr/bin/gcc"
+    CXX := "/opt/rh/devtoolset-3/root/usr/bin/g++"
+    CXXFLAGS+=-std=c++11 -DCPP11
+  endif
+endif
+
+
 all: libdev_tools.so
 
 clean:
@@ -40,7 +54,7 @@ clean:
 
 libdev_tools.so: $(SRCS)
 	@if test ! -d "$(SCIDB)"; then echo  "Error. Try:\n\nmake SCIDB=<PATH TO SCIDB INSTALL PATH>"; exit 1; fi
-	$(CXX) $(CCFLAGS) $(INC) -o Logicalinstall_github.o -c Logicalinstall_github.cpp
-	$(CXX) $(CCFLAGS) $(INC) -o Physicalinstall_github.o -c Physicalinstall_github.cpp
-	$(CXX) $(CCFLAGS) $(INC) -o libdev_tools.so plugin.cpp Logicalinstall_github.o Physicalinstall_github.o $(LIBS)
+	$(CXX) $(CXXFLAGS) $(INC) -o Logicalinstall_github.o -c Logicalinstall_github.cpp
+	$(CXX) $(CXXFLAGS) $(INC) -o Physicalinstall_github.o -c Physicalinstall_github.cpp
+	$(CXX) $(CXXFLAGS) $(INC) -o libdev_tools.so plugin.cpp Logicalinstall_github.o Physicalinstall_github.o $(LIBS)
 	@echo "Now copy *.so to $(INSTALL_DIR) on all your SciDB nodes, and restart SciDB."

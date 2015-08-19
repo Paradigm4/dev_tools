@@ -42,6 +42,12 @@
 
 #define CMDBUFSZ 16384
 
+#ifdef CPP11
+using namespace std;
+#else
+using namespace boost;
+#endif
+
 namespace scidb
 {
 
@@ -83,15 +89,15 @@ public:
               ++iter;
             }
 
-            std::string const repo = ((boost::shared_ptr<OperatorParamPhysicalExpression>&)_parameters[0])->getExpression()->evaluate().getString();
+            std::string const repo = ((shared_ptr<OperatorParamPhysicalExpression>&)_parameters[0])->getExpression()->evaluate().getString();
             std::string branch;
             if(_parameters.size()>1)
-                branch = ((boost::shared_ptr<OperatorParamPhysicalExpression>&)_parameters[1])->getExpression()->evaluate().getString();
+                branch = ((shared_ptr<OperatorParamPhysicalExpression>&)_parameters[1])->getExpression()->evaluate().getString();
             else branch = "master";
 
             std::string options;
             if(_parameters.size()>2)
-                options = ((boost::shared_ptr<OperatorParamPhysicalExpression>&)_parameters[2])->getExpression()->evaluate().getString();
+                options = ((shared_ptr<OperatorParamPhysicalExpression>&)_parameters[2])->getExpression()->evaluate().getString();
             else options = "";
 
             snprintf(dir,4096,"/tmp/install_github_XXXXXX");
@@ -192,7 +198,7 @@ fprintf(stderr, "cmd %s\n",cmd);
                         << "failed to install plugin";
 
         }
-        return boost::shared_ptr<Array>(new MemArray(_schema,query));
+        return shared_ptr<Array>(new MemArray(_schema,query));
     }
 };
 

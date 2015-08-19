@@ -1,7 +1,9 @@
 #include "query/Operator.h"
 
 using namespace std;
+#ifndef CPP11
 using namespace boost;
+#endif
 
 namespace scidb
 {
@@ -38,9 +40,9 @@ public:
     	_usage = "install_github('repository' [, 'branch'] [, 'options'])";
     }
 
-    std::vector<boost::shared_ptr<OperatorParamPlaceholder> > nextVaryParamPlaceholder(const std::vector< ArrayDesc> &schemas)
+    std::vector<shared_ptr<OperatorParamPlaceholder> > nextVaryParamPlaceholder(const std::vector< ArrayDesc> &schemas)
     {  
-        std::vector<boost::shared_ptr<OperatorParamPlaceholder> > res;
+        std::vector<shared_ptr<OperatorParamPlaceholder> > res;
         res.push_back(END_OF_VARIES_PARAMS());
         switch (_parameters.size()) {
           case 0:
@@ -64,7 +66,11 @@ public:
         atts[0] = AttributeDesc((AttributeID)0, "success",  TID_BOOL, 0, 0 );
         Dimensions dims(1);
         dims[0] = DimensionDesc("i", 0, 0, 0, 0, 1, 0);
+#ifdef CPP11
+        return ArrayDesc("", atts, dims, defaultPartitioning());
+#else
         return ArrayDesc("", atts, dims);
+#endif
     }
 
 };
