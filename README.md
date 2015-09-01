@@ -28,23 +28,9 @@ The environment variable SCIDB is automatically set to the path containing
 the running version of scidb. You can set the SCIDB environment variable
 in the options string to override the default choice.
 
-## Requirements
-This plugin requires that
+## Installation
 
-* SciDB development headers and a few additional development headers
-need to be installed. For example, for SciDB
-version 14.8 run the following for Ubuntu or RHEL/CentOS, respectively
-(change the SciDB version number as required):
-```
-# On Ubuntu systems, run:
-sudo apt-get install scidb-14.8-dev scidb-14.8-libboost1.54-all-dev libpqxx3-dev liblog4cxx10-dev
-
-# On CentOS or RHEL systems, run:
-sudo yum install scidb-14.8-dev  scidb-14.8-libboost-devel libpqxx-devel log4cxx-devel
-```
-Note that some plugins might require installation of additional operating system development
-header packages. If a plugin fails to compile, examine its error output and install additional
-packages as required.
+### Pre-requisites
 
 * The user that runs the `scidb` process must have read/write access to
 the `lib/scidb/plugins` directory on every computer that SciDB is installed on
@@ -52,21 +38,61 @@ in the cluster (that is, on every *node*). For example, if the SciDB user name
 is `scidb` with group name `scidb`, and the computer nodes in the cluster are
 `10.0.0.1, 10.0.0.2, 10.0.0.3`,  then run the following as the root user:
 ```
-ssh 10.0.0.1 "chown -R scidb:scidb /opt/scidb/14.8/lib/scidb/plugins
-ssh 10.0.0.2 "chown -R scidb:scidb /opt/scidb/14.8/lib/scidb/plugins
-ssh 10.0.0.3 "chown -R scidb:scidb /opt/scidb/14.8/lib/scidb/plugins
+ssh 10.0.0.1 "chown -R scidb:scidb /opt/scidb/15.7/lib/scidb/plugins
+ssh 10.0.0.2 "chown -R scidb:scidb /opt/scidb/15.7/lib/scidb/plugins
+ssh 10.0.0.3 "chown -R scidb:scidb /opt/scidb/15.7/lib/scidb/plugins
 ```
-
-### Notes and limitations
-
-* The wget and tar programs must be installed on the SciDB node on whic
-SciDB instance ID 0 is running, and the tar program must be installed on all SciDB nodes.
+* The wget and tar programs must be installed on the SciDB node on which SciDB instance ID 0 is running, and the tar program must be installed on all SciDB nodes.
 * Installation must be initiated from instance ID 0.
 * The plugin repository must build with the simple command `make` and the
 optional environment variable definitions passed through the options argument.
+* Note that plugins that rely on system libraries require that those libraries are available on all cluster nodes.
+* SciDB should be installed at /opt/scidb. Otherwise you will need to supply the SCIDB and SCIDB_THIRDPARTY_PREFIX variables when building and installing plugins.
 
-Note that plugins that rely on system libraries require that those libraries
-are available on all cluster nodes.
+### Required packages: SciDB 15.7
+Release 15.7 uses the newer C++ compiler that must be installed separately. If you are building SciDB from source, you will not have access to the `paradigm4-15.7-dev` package but the headers it provides should already be installed at /opt/scidb/15.7/include. You should be able to proceed without that package.
+
+Assuming you are starting with a fairly bare system, you will need these packages:
+```
+#On Ubuntu 14.04:
+#Omit paradigm4-15.7-dev if you've built and installed from source
+sudo apt-get install paradigm4-15.7-dev make git scidb-15.7-libboost1.54-dev g++-4.9 gcc-4.9 libpqxx-dev liblog4cxx10-dev
+
+#On CentOS 6:
+#Install the compiler from a third-party repo:
+sudo yum install scl-utils
+wget https://www.softwarecollections.org/en/scls/rhscl/devtoolset-3/epel-6-x86_64/download/rhscl-devtoolset-3-epel-6-x86_64.noarch.rpm
+sudo rpm -i rhscl-devtoolset-3-epel-6-x86_64.noarch.rpm 
+#Omit paradigm4-15.7-dev if you've built and installed from source
+sudo yum install paradigm4-15.7-dev git devtoolset-3-gcc-c++.x86_64 scidb-15.7-libboost-devel libpqxx-devel log4cxx-devel
+```
+
+### Required packages: SciDB 14.12 or earlier
+A little simpler
+```
+# On Ubuntu systems, run:
+sudo apt-get install scidb-14.12-dev scidb-14.12-libboost1.54-all-dev libpqxx3-dev liblog4cxx10-dev
+
+# On CentOS or RHEL systems, run:
+sudo yum install scidb-14.12-dev  scidb-14.12-libboost-devel libpqxx-devel log4cxx-devel
+```
+Note that some plugins might require installation of additional operating system development
+header packages. If a plugin fails to compile, examine its error output and install additional
+packages as required.
+
+### Build and install the plugin
+
+Run `make` and copy  the `libdev_tools.so` plugin to the `lib/scidb/plugins`
+directory on each of your SciDB cluster nodes. Here is an example:
+
+```
+cd dev_tools
+make
+cp *.so /opt/scidb/15.7/lib/scidb/plugins
+
+iquery -aq "load_library('dev_tools')"
+```
+Remember to copy the plugin to *all* your SciDB cluster nodes.
 
 ## Example
 
@@ -77,6 +103,14 @@ load_library('dev_tools')
 install_github('paradigm4/chunk_unique')
 load_library('cu')
 ```
+
+If your SciDB installation is not under /opt/scidb/, you may need to supply additional build options:
+```
+load_library('dev_tools')
+install_github('paradigm4/chunk_unique', 'master', 'SCIDB=/home/apoliakov/workspace/15.7/stage/install SCIDB_THIRDPARTY_PREFIX=/opt/scidb/15.7')
+load_library('cu')
+```
+Obviously that requires the plugin makefile to respect these variables.
 
 ## What happens under the hood
 
@@ -99,22 +133,3 @@ respective `lib/scidb/plugins` directories.
 If things go wrong, errors are reported to the SciDB log. Errors from
 invoked command-line programs like wget and tar are reported in the
 `scidb-stderr.log` file on each instance.
-
-## Installing the plug in
-
-You'll need SciDB installed, along with the SciDB development header packages.
-The names vary depending on your operating system type, but they are the
-package that have "-dev" in the name. You *don't* need the SciDB source code to
-compile and install this.
-
-Run `make` and copy  the `libknn.so` plugin to the `lib/scidb/plugins`
-directory on each of your SciDB cluster nodes. Here is an example:
-
-```
-cd dev_tools
-make
-cp *.so /opt/scidb/14.8/lib/scidb/plugins
-
-iquery -aq "load_library('dev_tools')"
-```
-Remember to copy the plugin to *all* your SciDB cluster nodes.
