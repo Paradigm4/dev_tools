@@ -105,7 +105,7 @@ public:
             if(!d) throw SYSTEM_EXCEPTION(SCIDB_SE_OPERATOR, SCIDB_LE_ILLEGAL_OPERATION)
                         << "failed to create temp directory";
             snprintf(cmd,CMDBUFSZ,"cd %s && wget https://github.com/%s/archive/%s.tar.gz",dir,repo.c_str(),branch.c_str());
-fprintf(stderr, "cmd %s\n",cmd);
+std::fprintf(stderr, "cmd %s\n",cmd);
             k = ::system((const char *)cmd);
             if(k!=0) throw SYSTEM_EXCEPTION(SCIDB_SE_OPERATOR, SCIDB_LE_ILLEGAL_OPERATION)
                         << "failed to retrieve repository";
@@ -126,11 +126,11 @@ fprintf(stderr, "cmd %s\n",cmd);
                         << "failed to stat plugin";
             shared_ptr<SharedBuffer> tarball(new MemoryBuffer(NULL, sb.st_size * sizeof(char)));
             shared_ptr<SharedBuffer> nothing(new MemoryBuffer(NULL, 0));
-            FILE *f = fopen(cmd, "r");
+            FILE *f = std::fopen(cmd, "r");
             if (!f) throw SYSTEM_EXCEPTION(SCIDB_SE_OPERATOR, SCIDB_LE_ILLEGAL_OPERATION)
                         << "failed to open plugin";
-            size_t sz = fread((char *)tarball->getData(), sizeof(char), sb.st_size, f);
-            fclose(f);
+            size_t sz = std::fread((char *)tarball->getData(), sizeof(char), sb.st_size, f);
+            std::fclose(f);
             if(sz != sb.st_size*sizeof(char)) throw SYSTEM_EXCEPTION(SCIDB_SE_OPERATOR, SCIDB_LE_ILLEGAL_OPERATION)
                         << "failed to read plugin";
 
@@ -181,11 +181,11 @@ fprintf(stderr, "cmd %s\n",cmd);
                         << "failed to create temp directory";
             memset(cmd,0,CMDBUFSZ);
             snprintf(cmd, CMDBUFSZ, "%s/plugin.tar.gz", dir);
-            FILE *f = fopen(cmd, "w+");
+            FILE *f = std::fopen(cmd, "w+");
             if (!f) throw SYSTEM_EXCEPTION(SCIDB_SE_OPERATOR, SCIDB_LE_ILLEGAL_OPERATION)
                         << "failed to open plugin";
-            size_t sz = fwrite((char *)buf->getData(), sizeof(char), buf->getSize(), f);
-            fclose(f);
+            size_t sz = std::fwrite((char *)buf->getData(), sizeof(char), buf->getSize(), f);
+            std::fclose(f);
             buf->free();
             if(sz != buf->getSize()*sizeof(char)) throw SYSTEM_EXCEPTION(SCIDB_SE_OPERATOR, SCIDB_LE_ILLEGAL_OPERATION)
                         << "failed to write plugin";

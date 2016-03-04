@@ -67,7 +67,7 @@ public:
         Dimensions dims(1);
         dims[0] = DimensionDesc("i", 0, 0, 0, 0, 1, 0);
 #ifdef CPP11
-        return ArrayDesc("", atts, dims, defaultPartitioning());
+        return ArrayDesc("", atts, dims, defaultPartitioning(), query->getDefaultArrayResidency());
 #else
         return ArrayDesc("", atts, dims);
 #endif
