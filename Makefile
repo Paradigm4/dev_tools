@@ -6,8 +6,19 @@ ifeq ($(SCIDB),)
   endif
 endif
 
+# A way to set the 3rdparty prefix path that is convenient
+# for SciDB developers.
+ifeq ($(SCIDB_VER),)
+  SCIDB_3RDPARTY = $(SCIDB)
+else
+  SCIDB_3RDPARTY = /opt/scidb/$(SCIDB_VER)
+endif
+
+# A better way to set the 3rdparty prefix path that does
+# not assume an absolute path. You can still use the above
+# method if you prefer.
 ifeq ($(SCIDB_THIRDPARTY_PREFIX),) 
-  SCIDB_THIRDPARTY_PREFIX := $(SCIDB)
+  SCIDB_THIRDPARTY_PREFIX := $(SCIDB_3RDPARTY)
 endif
 
 $(info Using SciDB path $(SCIDB))
