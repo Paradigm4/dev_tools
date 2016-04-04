@@ -104,7 +104,7 @@ public:
             d = mkdtemp(dir);
             if(!d) throw SYSTEM_EXCEPTION(SCIDB_SE_OPERATOR, SCIDB_LE_ILLEGAL_OPERATION)
                         << "failed to create temp directory";
-            snprintf(cmd,CMDBUFSZ,"cd %s && wget https://github.com/%s/archive/%s.tar.gz",dir,repo.c_str(),branch.c_str());
+            snprintf(cmd,CMDBUFSZ,"cd %s && %s wget https://github.com/%s/archive/%s.tar.gz",dir,options.c_str(),repo.c_str(),branch.c_str());
 std::fprintf(stderr, "cmd %s\n",cmd);
             k = ::system((const char *)cmd);
             if(k!=0) throw SYSTEM_EXCEPTION(SCIDB_SE_OPERATOR, SCIDB_LE_ILLEGAL_OPERATION)
