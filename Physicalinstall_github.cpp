@@ -104,7 +104,7 @@ public:
             d = mkdtemp(dir);
             if(!d) throw SYSTEM_EXCEPTION(SCIDB_SE_OPERATOR, SCIDB_LE_ILLEGAL_OPERATION)
                         << "failed to create temp directory";
-            snprintf(cmd,CMDBUFSZ,"cd %s && wget https://github.com/%s/archive/%s.tar.gz",dir,repo.c_str(),branch.c_str());
+            snprintf(cmd,CMDBUFSZ,"cd %s && %s wget https://github.com/%s/archive/%s.tar.gz",dir,options.c_str(),repo.c_str(),branch.c_str());
 fprintf(stderr, "cmd %s\n",cmd);
             k = ::system((const char *)cmd);
             if(k!=0) throw SYSTEM_EXCEPTION(SCIDB_SE_OPERATOR, SCIDB_LE_ILLEGAL_OPERATION)
@@ -113,7 +113,9 @@ fprintf(stderr, "cmd %s\n",cmd);
 // Get our base SciDB path (XXX is there an easier way?), and build the plugin
             memset(cmd,0,CMDBUFSZ);
             pid_t mypid = getpid();
-            snprintf(cmd,CMDBUFSZ,"x=`readlink /proc/%d/exe`;x=`dirname $x`;x=`dirname $x`;cd %s; tar -zxf *;cd %s/*-%s;SCIDB=$x %s make && tar -zcf ../plugin.tar.gz *.so",mypid,dir,dir,branch.c_str(), options.c_str());
+            std::string branch_dir_suffix = branch;
+            if (branch[0] == 'v') branch_dir_suffix = branch.substr(1);
+            snprintf(cmd,CMDBUFSZ,"x=`readlink /proc/%d/exe`;x=`dirname $x`;x=`dirname $x`;cd %s; tar -zxf *;cd %s/*-%s;SCIDB=$x %s make && tar -zcf ../plugin.tar.gz *.so",mypid,dir,dir,branch_dir_suffix.c_str(), options.c_str());
             k = ::system((const char *)cmd);
             if(k!=0) throw SYSTEM_EXCEPTION(SCIDB_SE_OPERATOR, SCIDB_LE_ILLEGAL_OPERATION)
                         << "failed to build plugin";
