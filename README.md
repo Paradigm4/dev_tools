@@ -125,7 +125,7 @@ load_library('grouped_aggregate')
 If your SciDB installation is not under /opt/scidb/, or if you are using an older version, you may need additional options:
 ```
 load_library('dev_tools')
-install_github('paradigm4/grouped_aggregate', 'v15.7', 'SCIDB=/home/apoliakov/workspace/15.7/stage/install' SCIDB_THIRDPARTY_PREFIX=/opt/scidb/15.7')
+install_github('paradigm4/grouped_aggregate', 'v15.7', 'SCIDB=/home/apoliakov/workspace/15.7/stage/install SCIDB_THIRDPARTY_PREFIX=/opt/scidb/15.7')
 load_library('grouped_aggregate')
 ```
 Obviously that requires the plugin makefile to respect these variables.
