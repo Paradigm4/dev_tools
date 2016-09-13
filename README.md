@@ -52,10 +52,12 @@ optional environment variable definitions passed through the options argument.
 ### Required packages: SciDB 15.12
 If you are building SciDB from source, you will not have access to the `paradigm4-15.12-dev` package but the headers it provides should already be installed at /opt/scidb/15.12/include. You should be able to proceed without that package.
 
+*NOTE* If you use the epel repository on CentOS, you need to add `--disablerepo=epel` to the `yum intsall` lines below (the epel repository includes newer library versions not compatible with the base CentOS operating system libraries that SciDB is compiled against).
+
 Assuming you are starting with a fairly bare system, you will need these packages:
 ```
 #On Ubuntu 14.04:
-#Omit paradigm4-15.7-dev if you've built and installed from source
+#Omit paradigm4-15.12-dev if you've built and installed from source
 sudo apt-get install paradigm4-15.12-dev make git scidb-15.12-libboost1.54-dev g++-4.9 gcc-4.9 libpqxx-dev liblog4cxx10-dev
 
 #On CentOS 6:
@@ -63,7 +65,7 @@ sudo apt-get install paradigm4-15.12-dev make git scidb-15.12-libboost1.54-dev g
 sudo yum install scl-utils
 wget https://www.softwarecollections.org/en/scls/rhscl/devtoolset-3/epel-6-x86_64/download/rhscl-devtoolset-3-epel-6-x86_64.noarch.rpm
 sudo rpm -i rhscl-devtoolset-3-epel-6-x86_64.noarch.rpm 
-#Omit paradigm4-15.7-dev if you've built and installed from source
+#Omit paradigm4-15.12-dev if you've built and installed from source
 sudo yum install paradigm4-15.12-dev git devtoolset-3-gcc-c++.x86_64 scidb-15.12-libboost-devel libpqxx-devel log4cxx-devel
 ```
 
