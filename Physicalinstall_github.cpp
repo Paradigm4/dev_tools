@@ -72,22 +72,10 @@ public:
 
         if (query->getInstanceID() == 0)
         {
-            const char *s = "";
             Instances instances;
             SystemCatalog::getInstance()->getInstances(instances);
             Instances::const_iterator iter = instances.begin();
             InstanceID id;
-            std::set<InstanceID> first_instances;
-            while(iter != instances.end())
-            {
-              if(strcmp(s,iter->getHost().c_str())!=0)
-              {
-                s = iter->getHost().c_str();
-                id = iter->getInstanceId();
-                first_instances.insert(id);
-              }
-              ++iter;
-            }
 
             std::string const repo = ((shared_ptr<OperatorParamPhysicalExpression>&)_parameters[0])->getExpression()->evaluate().getString();
             std::string branch;
@@ -144,19 +132,30 @@ std::fprintf(stderr, "cmd %s\n",cmd);
                         << "failed to install plugin";
 
 // Copy the plugin to other instances and install it
-            for(InstanceID i = 0; i < query->getInstancesCount(); i++)
-            {  
-                if(i == query->getInstanceID())
-                {   continue; }
-                else if(first_instances.find(i) != first_instances.end())
+std::fprintf(stderr,"COPY PHASE\n");
+            iter = instances.begin();
+            id = 0;
+            const char *s = "";
+            while(iter != instances.end())
+            {
+std::fprintf(stderr, "id=%d Id=%d host=%s\n", (int)id, (int)iter->getInstanceId(), iter->getHost().c_str());
+              if(iter->getInstanceId() != query->getInstanceID())
+              {
+                if(strcmp(s, iter->getHost().c_str()) != 0)
                 {
+std::fprintf(stderr,"copy to %d\n", (int)iter->getInstanceId());
                   // copy file
-                  BufSend(i, tarball, query);
+                  s = iter->getHost().c_str();
+                  BufSend(id, tarball, query);
                 } else
                 {
-                  // don't copy
-                  BufSend(i, nothing, query);
+std::fprintf(stderr,"NO copy to %d\n", (int)iter->getInstanceId());
+                    // don't copy
+                    BufSend(id, nothing, query);
                 }
+              }
+              ++id;
+              ++iter;
             }
 
             shared_ptr<Array> outputArray(new MemArray(_schema, query));
