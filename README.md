@@ -60,11 +60,10 @@ Assuming you are starting with a fairly bare system, you will need these package
 #Omit paradigm4-15.12-dev if you've built and installed from source
 sudo apt-get install paradigm4-15.12-dev make git scidb-15.12-libboost1.54-dev g++-4.9 gcc-4.9 libpqxx-dev liblog4cxx10-dev
 
-#On CentOS 6:
-#Install the compiler from a third-party repo:
-sudo yum install scl-utils
-wget https://www.softwarecollections.org/en/scls/rhscl/devtoolset-3/epel-6-x86_64/download/rhscl-devtoolset-3-epel-6-x86_64.noarch.rpm
-sudo rpm -i rhscl-devtoolset-3-epel-6-x86_64.noarch.rpm 
+#On RHEL/CentOS 6:
+#Install the package 'devtoolset-3-gcc-c++' from "devtoolset-3". 
+#See https://www.softwarecollections.org/en/scls/rhscl/devtoolset-3/
+
 #Omit paradigm4-15.12-dev if you've built and installed from source
 sudo yum install paradigm4-15.12-dev git devtoolset-3-gcc-c++.x86_64 scidb-15.12-libboost-devel libpqxx-devel log4cxx-devel
 ```
@@ -78,11 +77,10 @@ Assuming you are starting with a fairly bare system, you will need these package
 #Omit paradigm4-15.7-dev if you've built and installed from source
 sudo apt-get install paradigm4-15.7-dev make git scidb-15.7-libboost1.54-dev g++-4.9 gcc-4.9 libpqxx-dev liblog4cxx10-dev
 
-#On CentOS 6:
-#Install the compiler from a third-party repo:
-sudo yum install scl-utils
-wget https://www.softwarecollections.org/en/scls/rhscl/devtoolset-3/epel-6-x86_64/download/rhscl-devtoolset-3-epel-6-x86_64.noarch.rpm
-sudo rpm -i rhscl-devtoolset-3-epel-6-x86_64.noarch.rpm 
+#On RHEL/CentOS 6:
+#Install the package 'devtoolset-3-gcc-c++' from "devtoolset-3". 
+#See https://www.softwarecollections.org/en/scls/rhscl/devtoolset-3/
+
 #Omit paradigm4-15.7-dev if you've built and installed from source
 sudo yum install paradigm4-15.7-dev git devtoolset-3-gcc-c++.x86_64 scidb-15.7-libboost-devel libpqxx-devel log4cxx-devel
 ```
