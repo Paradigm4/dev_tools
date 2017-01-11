@@ -49,12 +49,24 @@ optional environment variable definitions passed through the options argument.
 * Note that plugins that rely on system libraries require that those libraries are available on all cluster nodes.
 * SciDB should be installed at /opt/scidb. Otherwise you will need to supply the SCIDB and SCIDB_THIRDPARTY_PREFIX variables when building and installing plugins.
 
-### Required packages: SciDB 15.12
-If you are building SciDB from source, you will not have access to the `paradigm4-15.12-dev` package but the headers it provides should already be installed at /opt/scidb/15.12/include. You should be able to proceed without that package.
-
-*NOTE* If you use the epel repository on CentOS, you need to add `--disablerepo=epel` to the `yum intsall` lines below (the epel repository includes newer library versions not compatible with the base CentOS operating system libraries that SciDB is compiled against).
+### Required packages: SciDB 16.9
+If you are building SciDB from source, you will not have access to the `paradigm4-15.12-dev` package but the headers it provides should already be at /opt/scidb/16.9/include or the "include" subdirectory of your SciDB installation. You should be able to proceed without that package.
 
 Assuming you are starting with a fairly bare system, you will need these packages:
+```
+#On Ubuntu 14.04:
+#Omit paradigm4-16.9-dev if you've built and installed from source
+sudo apt-get install paradigm4-16.9-dev make git scidb-16.9-libboost1.54-dev g++-4.9 gcc-4.9 libpqxx-dev liblog4cxx10-dev libprotobuf-dev
+
+#On RHEL/CentOS 6:
+#Install the package 'devtoolset-3-gcc-c++' from "devtoolset-3". 
+#See https://www.softwarecollections.org/en/scls/rhscl/devtoolset-3/
+
+#Omit paradigm4-16.9-dev if you've built and installed from source
+sudo yum install paradigm4-16.9-dev git devtoolset-3-gcc-c++.x86_64 scidb-16.9-libboost-devel libpqxx-devel log4cxx-devel protobuf-devel
+```
+
+### Required packages: SciDB 15.12
 ```
 #On Ubuntu 14.04:
 #Omit paradigm4-15.12-dev if you've built and installed from source
