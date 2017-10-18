@@ -33,6 +33,7 @@
 #include <unistd.h>
 
 #include "query/Operator.h"
+#include "system/SystemCatalog.h"
 
 #if SCIDB_VARIANT < 1412
 #include "query/Network.h"
