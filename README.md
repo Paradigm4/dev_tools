@@ -49,21 +49,37 @@ optional environment variable definitions passed through the options argument.
 * Note that plugins that rely on system libraries require that those libraries are available on all cluster nodes.
 * SciDB should be installed at /opt/scidb. Otherwise you will need to supply the SCIDB and SCIDB_THIRDPARTY_PREFIX variables when building and installing plugins.
 
-### Required packages: SciDB 17.1
-If you are building SciDB from source, you will not have access to the `paradigm4-15.12-dev` package but the headers it provides should already be at `/opt/scidb/17.1/include` or the "include" subdirectory of your SciDB installation. You should be able to proceed without that package.
+### Required packages: SciDB 18.1
+If you are building SciDB from source, you will not have access to the `paradigm4-15.12-dev` package but the headers it provides should already be at `/opt/scidb/18.1/include` or the "include" subdirectory of your SciDB installation. You should be able to proceed without that package.
 
 Assuming you are starting with a fairly bare system, you will need these packages:
 ```
 #On Ubuntu 14.04:
-#Omit paradigm4-17.1-dev if you've built and installed from source
-sudo apt-get install paradigm4-17.1-dev make git scidb-17.1-libboost1.54-dev g++-4.9 gcc-4.9 libpqxx-dev liblog4cxx10-dev libprotobuf-dev
+#Omit paradigm4-18.1-dev if you've built and installed from source
+sudo apt-get install paradigm4-18.1-dev make git scidb-18.1-libboost1.54-dev g++-4.9 gcc-4.9 libpqxx-dev liblog4cxx10-dev libprotobuf-dev
 
 #On RHEL/CentOS 6:
 #Install the package 'devtoolset-3-gcc-c++' from "devtoolset-3". 
 #See https://www.softwarecollections.org/en/scls/rhscl/devtoolset-3/
 
-#Omit paradigm4-17.1-dev if you've built and installed from source
-sudo yum install paradigm4-17.1-dev git devtoolset-3-gcc-c++.x86_64 scidb-17.1-libboost-devel libpqxx-devel log4cxx-devel protobuf-devel
+#Omit paradigm4-18.1-dev if you've built and installed from source
+sudo yum install paradigm4-18.1-dev git devtoolset-3-gcc-c++.x86_64 scidb-18.1-libboost-devel libpqxx-devel log4cxx-devel protobuf-devel
+
+# On RHEL/CentOS 7:
+# The following repo file needs to be added, and pointed to Centos 7 (specifically)
+
+#-> cat scidb3rdparty.repo
+[scidb3rdparty]
+name=SciDB 3rdparty repository
+baseurl=https://downloads.paradigm4.com/centos7/3rdparty
+gpgkey=https://downloads.paradigm4.com/key
+gpgcheck=1
+enabled=1
+
+# Then run:
+sudo yum install scidb-18.1-libboost-devel --disablerepo=paradigm4
+sudo yum install paradigm4-18.1-dev git devtoolset-3-gcc-c++.x86_64 scidb-18.1-libboost-devel libpqxx-devel log4cxx-devel protobuf-devel
+
 ```
 
 ### Required packages: SciDB 16.9
