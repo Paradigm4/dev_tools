@@ -48,12 +48,12 @@ SRCS = Logicalinstall_github.cpp \
 ifneq ("$(wildcard /usr/bin/g++-4.9)","")
   CC := "/usr/bin/gcc-4.9"
   CXX := "/usr/bin/g++-4.9"
-  CXXFLAGS+=-std=c++11 -DCPP11
+  CXXFLAGS+=-std=c++14 -DCPP14
 else
   ifneq ("$(wildcard /opt/rh/devtoolset-3/root/usr/bin/gcc)","")
     CC := "/opt/rh/devtoolset-3/root/usr/bin/gcc"
     CXX := "/opt/rh/devtoolset-3/root/usr/bin/g++"
-    CXXFLAGS+=-std=c++11 -DCPP11
+    CXXFLAGS+=-std=c++14 -DCPP14
   endif
 endif
 

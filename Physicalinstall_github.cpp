@@ -33,6 +33,7 @@
 #include <unistd.h>
 
 #include "query/Operator.h"
+#include "system/SystemCatalog.h"
 
 #if SCIDB_VARIANT < 1412
 #include "query/Network.h"
@@ -42,10 +43,10 @@
 
 #define CMDBUFSZ 16384
 
-#ifdef CPP11
 using namespace std;
+#ifdef CPP11
 #else
-using namespace boost;
+//using namespace boost;
 #endif
 
 namespace scidb
