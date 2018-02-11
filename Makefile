@@ -31,7 +31,8 @@ OPTIMIZED=-O2 -DNDEBUG
 DEBUG=-g -ggdb3
 CFLAGS = -pedantic -W -Wextra -Wall -Wno-variadic-macros -Wno-strict-aliasing \
          -Wno-long-long -Wno-unused-parameter -fPIC -D_STDC_FORMAT_MACROS \
-         -Wno-system-headers -isystem  $(OPTIMIZED) -D_STDC_LIMIT_MACROS -std=c99
+         -Wno-system-headers 
+	 $(OPTIMIZED) -D_STDC_LIMIT_MACROS -std=c99
 CXXFLAGS = -pedantic -W -Wextra -Wall -Wno-variadic-macros -Wno-strict-aliasing \
          -Wno-long-long -Wno-unused-parameter -fPIC -DSCIDB_VARIANT=$(SCIDB_VARIANT) $(OPTIMIZED)
 INC = -I. -DPROJECT_ROOT="\"$(SCIDB)\"" -I"$(SCIDB_THIRDPARTY_PREFIX)/3rdparty/boost/include/" \
