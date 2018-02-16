@@ -2,7 +2,7 @@
 
 using namespace std;
 #ifndef CPP11
-using namespace boost;
+//using namespace boost;
 #endif
 
 namespace scidb
@@ -63,14 +63,14 @@ public:
     ArrayDesc inferSchema(vector<ArrayDesc> inputSchemas, shared_ptr<Query> query)
     {
         Attributes atts(1);
-        atts[0] = AttributeDesc((AttributeID)0, "success",  TID_BOOL, 0, 0 );
+        atts[0] = AttributeDesc((AttributeID)0, "success",  TID_BOOL, 0, CompressorType::NONE );
         Dimensions dims(1);
         dims[0] = DimensionDesc("i", 0, 0, 0, 0, 1, 0);
-#ifdef CPP11
+        //#ifdef CPP11
         return ArrayDesc("", atts, dims, defaultPartitioning(), query->getDefaultArrayResidency());
-#else
-        return ArrayDesc("", atts, dims);
-#endif
+        //#else
+        //return ArrayDesc("", atts, dims);
+        //#endif
     }
 
 };
